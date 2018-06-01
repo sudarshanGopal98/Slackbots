@@ -16,9 +16,12 @@ command_response_map = dict()
 
 def process_command(slack_events) :
     """
+    process_comand processes events that have happened in a particular Slack Channel,
+    and returns the user query presented to the bot and the channel of origin for
+    further processing and determination of bot output.
 
-    :param slack_events:
-    :return:
+    :param slack_events: A list of events that have been listened by the bot
+    :return: Returns a tuple of the user query presented to the bot and the channel of origin
     """
 
     for event in slack_events:
@@ -36,9 +39,9 @@ def process_command(slack_events) :
 def respond(command, channel) :
     """
 
-    :param command:
-    :param channel:
-    :return:
+    :param command: The user query presented to the bot
+    :param channel: The command's channel of origin
+    :return: Return's the bot's response to a user command
     """
     response = None
 
@@ -50,13 +53,12 @@ def respond(command, channel) :
             for string in command_response_map.keys():
                 response += string +"\n"
 
-    slack_client.api_call("chat.postMessage", channel=channel, text=response)
+    slack_client.api_call("chat.postMessage", channel=channel, text=response, username = 'GBot', icon_emoji=':grinning:')
 
 
 def initialize_responses() :
     """
-
-    :return:
+    Initializes responses for each user query / command, and stores it in a dictionary
     """
     command_response_map['hello'] = "Hey there! I am GBot"
     command_response_map['weather'] = "The weather might be good, but I'm not really sure..."
